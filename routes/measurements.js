@@ -1,20 +1,16 @@
-const express = require("express");
+const express = require('express');
+const {
+  createMeasurement,
+  getMeasurements,
+} = require('../controllers/measurements.controllers');
+const requireApiKey = require('../middleware/auth');
+
 const router = express.Router();
-const Measurement = require("../models/measurements");
-const auth = require("../middleware/auth");
 
-// CREATE MEASUREMENT
-router.post("/", auth, async (req, res) => {
-  const data = new Measurement({
-    type: req.body.type,
-    value: req.body.value,
-    location: req.body.location,
-    timestamp: req.body.timestamp
-  });
+// Lecture publique, selon la consigne de la phase 1.
+router.get('/', getMeasurements);
 
-  await data.save();
-
-  res.status(201).json(data);
-});
+// Écriture protégée par API key.
+router.post('/', requireApiKey, createMeasurement);
 
 module.exports = router;

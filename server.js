@@ -1,25 +1,21 @@
-const express = require("express");
-const mongoose = require("mongoose");
-require("dotenv").config();
+require('dotenv').config();
 
-console.log("MONGO_URI =", process.env.MONGO_URI);
+const app = require('./app');
+const connectDB = require('./config/db');
 
-const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error.message);
+    process.exit(1);
+  }
+}
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connecté !");
-  })
-  .catch((err) => {
-    console.error("Erreur MongoDB :", err);
-  });
+startServer();
 
-app.get("/", (req, res) => {
-  res.send("API fonctionne !");
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Serveur lancé sur le port ${process.env.PORT || 3000}`);
-});

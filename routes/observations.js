@@ -1,14 +1,16 @@
-const express = require("express");
+const express = require('express');
+const {
+  createObservation,
+  getObservations,
+} = require('../controllers/observations.controllers');
+const requireApiKey = require('../middleware/auth');
+
 const router = express.Router();
-const Observation = require("../models/observations");
-const auth = require("../middleware/auth");
 
-// CREATE OBSERVATION
-router.post("/", auth, async (req, res) => {
-  const obs = new Observation(req.body);
-  await obs.save();
+// Lecture publique, selon la consigne de la phase 1.
+router.get('/', getObservations);
 
-  res.status(201).json(obs);
-});
+// Écriture protégée par API key.
+router.post('/', requireApiKey, createObservation);
 
 module.exports = router;
