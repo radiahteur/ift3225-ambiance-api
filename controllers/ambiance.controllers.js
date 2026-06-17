@@ -1,11 +1,18 @@
 const Measurement = require('../models/measurements');
 const Observation = require('../models/observations');
 
+// Note: Phyphox (capteur "Audio Amplitude") retourne un niveau sonore
+// relatif au plein-échelle du micro (dBFS), donc des valeurs négatives
+// (ex: -75 à -45 environ). Ce n'est PAS un dB SPL calibré (qui serait
+// positif, ~30-90 dB). Les seuils ci-dessous sont calibrés sur cette
+// échelle dBFS, à partir des sessions de collecte réelles. Une vraie
+// calibration nécessiterait un sonomètre de référence (voir rapport,
+// section "Limites et évolution").
 function classifyNoise(avgSoundDb) {
   if (avgSoundDb == null) return 'unknown';
-  if (avgSoundDb < 45) return 'quiet';
-  if (avgSoundDb < 65) return 'normal';
-  if (avgSoundDb < 80) return 'noisy';
+  if (avgSoundDb < -65) return 'quiet';
+  if (avgSoundDb < -58) return 'normal';
+  if (avgSoundDb < -48) return 'noisy';
   return 'very_noisy';
 }
 
@@ -108,7 +115,9 @@ async function getComfortScore(req, res, next) {
     const avgMovement = average(measurements.map((m) => m.acceleration?.magnitude));
 
     let score = 100;
-    if (avgSoundDb != null) score -= Math.max(0, avgSoundDb - 45) * 1.2;
+    // Échelle dBFS (Phyphox, valeurs négatives) : on pénalise au-dessus
+    // de -58 dBFS (seuil "normal" de classifyNoise), proportionnellement.
+    if (avgSoundDb != null) score -= Math.max(0, avgSoundDb - (-58)) * 1.2;
     if (avgLightLux != null && avgLightLux < 100) score -= 15;
     if (avgLightLux != null && avgLightLux > 900) score -= 10;
     if (avgMovement != null && avgMovement > 11) score -= 10;

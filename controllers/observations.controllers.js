@@ -27,6 +27,12 @@ async function getObservations(req, res, next) {
       filter.deviceId = req.query.deviceId;
     }
 
+    if (req.query.from || req.query.to) {
+      filter.timestamp = {};
+      if (req.query.from) filter.timestamp.$gte = new Date(req.query.from);
+      if (req.query.to) filter.timestamp.$lte = new Date(req.query.to);
+    }
+
     const limit = Math.min(Number(req.query.limit || 100), 500);
 
     const observations = await Observation.find(filter)
