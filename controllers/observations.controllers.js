@@ -1,3 +1,6 @@
+// Contrôleur des observations.
+// Gère l'ajout et la consultation des observations manuelles.
+
 const Observation = require('../models/observations');
 
 async function createObservation(req, res, next) {

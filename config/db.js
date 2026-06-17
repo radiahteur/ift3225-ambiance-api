@@ -1,4 +1,5 @@
-// Connexion MongoDB
+// Configuration MongoDB.
+// Établit la connexion entre l'application et la base de données MongoDB Atlas.
 
 const mongoose = require('mongoose');
 

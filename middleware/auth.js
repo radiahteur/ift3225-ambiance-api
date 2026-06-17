@@ -1,3 +1,7 @@
+// Middleware d'authentification par clé API. 
+// Vérifie la présence et la validité du header x-api-key
+// avant d'autoriser l'accès aux routes protégées.
+
 function requireApiKey(req, res, next) {
   const providedKey = req.header('x-api-key');
 

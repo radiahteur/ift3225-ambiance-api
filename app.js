@@ -1,3 +1,6 @@
+// Configuration de l'application Express.
+// Enregistre les middlewares et les routes de l'API.
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');

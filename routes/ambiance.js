@@ -1,3 +1,6 @@
+// Routes d'analyse d'ambiance.
+// Fournit les endpoints sémantiques tels que history, quiet-hours et comfort-score.
+
 const express = require('express');
 const {
   getHistory,

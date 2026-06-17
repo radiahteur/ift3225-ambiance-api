@@ -1,4 +1,5 @@
-// Logique métier (traitement des données)
+// Contrôleur des devices.
+// Gère la création et la consultation des appareils enregistrés.
 
 const Device = require('../models/devices');
 

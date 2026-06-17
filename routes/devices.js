@@ -1,3 +1,6 @@
+// Routes liées aux devices.
+// Définit les endpoints de création et de consultation des appareils.
+
 const express = require('express');
 const { createDevice, getDevices } = require('../controllers/devices.controllers');
 // POST /devices n'est PAS protégé (faille volontaire)

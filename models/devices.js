@@ -1,3 +1,6 @@
+// Modèle Device.
+// Représente un téléphone ou capteur enregistré dans le système de collecte.
+
 const mongoose = require('mongoose');
 
 const deviceSchema = new mongoose.Schema(

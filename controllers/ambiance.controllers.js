@@ -1,3 +1,7 @@
+// Contrôleur d'analyse d'ambiance.
+// Produit des informations dérivées à partir des mesures
+// et observationsenregistrées.
+
 const Measurement = require('../models/measurements');
 const Observation = require('../models/observations');
 
