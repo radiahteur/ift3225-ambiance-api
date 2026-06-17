@@ -1,4 +1,4 @@
-Projet réalisé dans le cadre du cours IFT3225 — Développement d'API et services Web
+Projet réalisé pour le cours IFT3225: Développement d'API et services Web
 
 Auteures: Radiah Mohamed Assowe 20229344, Fatoumata Mane 20214863
 
