@@ -34,7 +34,7 @@ node seed/seed.js
 ```
 4. Lancer le serveur :
 ```
-node server.js
+npm start
 ```
 Le serveur tourne par défaut sur `http://localhost:3000`.
 
