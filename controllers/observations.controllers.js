@@ -29,7 +29,7 @@ async function getObservations(req, res, next) {
     if (req.query.deviceId) {
       filter.deviceId = req.query.deviceId;
     }
-
+// Filtrage par plage de dates sur le timestamp de l'observation.
     if (req.query.from || req.query.to) {
       filter.timestamp = {};
       if (req.query.from) filter.timestamp.$gte = new Date(req.query.from);

@@ -16,6 +16,9 @@ const measurementSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    // Moment réel de la mesure, fourni par la collecte.
+    // Mongoose ajoute aussi createdAt (timestamps: true), qui représente
+    // le moment où le serveur a reçu/enregistré la donnée.
     timestamp: {
       type: Date,
       default: Date.now,
@@ -32,6 +35,7 @@ const measurementSchema = new mongoose.Schema(
       z: Number,
       magnitude: Number,
     },
+    // Phyphox), donc souvent négatif. Pas un dB SPL calibré.
     soundLevelDb: Number,
     lightLevelLux: Number,
     raw: {
