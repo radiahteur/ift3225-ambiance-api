@@ -1,3 +1,6 @@
+// Routes liées aux observations.
+// Permet d'ajouter et de consulter les observations d'ambiance.
+
 const express = require('express');
 const {
   createObservation,

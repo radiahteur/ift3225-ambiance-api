@@ -1,3 +1,6 @@
+// Contrôleur des mesures.
+// Gère l'enregistrement et la récupération des données provenant des capteurs. 
+
 const Measurement = require('../models/measurements');
 
 function magnitude(x, y, z) {

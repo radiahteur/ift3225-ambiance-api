@@ -1,3 +1,6 @@
+// Routes liées aux mesures.
+// Permet la collecte et la consultation des donnéesdes capteurs.
+
 const express = require('express');
 const {
   createMeasurement,

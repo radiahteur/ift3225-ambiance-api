@@ -1,3 +1,6 @@
+// Middleware global de gestion des erreurs.
+// Intercepte les erreurs générées par l'application et retourne une réponse JSON standardisée.
+
 function errorHandler(err, req, res, next) {
   console.error(err);
 

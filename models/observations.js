@@ -1,3 +1,6 @@
+// Modèle Observation.
+// Stocke les observations humaines sur l'ambiance d'un lieu (vibe, proximité, notes).
+
 const mongoose = require('mongoose');
 
 const observationSchema = new mongoose.Schema(

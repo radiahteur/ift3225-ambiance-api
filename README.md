@@ -1,4 +1,4 @@
-Projet réalisé dans le cadre du cours IFT3225 — Développement d'API et services Web
+Projet réalisé pour le cours IFT3225: Développement d'API et services Web
 
 Auteures: Radiah Mohamed Assowe 20229344, Fatoumata Mane 20214863
 
@@ -34,7 +34,7 @@ node seed/seed.js
 ```
 4. Lancer le serveur :
 ```
-node server.js
+npm start
 ```
 Le serveur tourne par défaut sur `http://localhost:3000`.
 

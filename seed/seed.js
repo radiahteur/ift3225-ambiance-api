@@ -1,4 +1,4 @@
-// Données de test
+// Données de test.
 // Script de seed — peuple la base avec des données de démonstration
 // (devices, mesures, observations) pour tester les endpoints de
 // consultation sans avoir à effectuer une collecte complète.

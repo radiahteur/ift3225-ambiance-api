@@ -1,3 +1,6 @@
+// Modèle Measurement.
+// Stocke les données collectées par les capteurs telles que le niveau sonore, la lumière et le mouvement.
+
 const mongoose = require('mongoose');
 
 const measurementSchema = new mongoose.Schema(
