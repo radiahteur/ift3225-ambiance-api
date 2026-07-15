@@ -10,6 +10,8 @@ const measurementRoutes = require('./routes/measurements');
 const observationRoutes = require('./routes/observations');
 const ambianceRoutes = require('./routes/ambiance');
 const errorHandler = require('./middleware/errorHandler');
+const placeRoutes = require('./routes/places');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -20,14 +22,17 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'IFT3225 Phase 1 Ambiance API',
+    message: 'IFT3225 Phase 2 Ambiance API',
     endpoints: [
       '/devices',
       '/measurements',
       '/observations',
       '/ambiance/:location/history',
       '/ambiance/:location/quiet-hours',
-      '/ambiance/:location/comfort-score'
+      '/ambiance/:location/comfort-score',
+      '/users/register',
+      '/users/login',
+      '/places'
     ]
   });
 });
@@ -36,6 +41,9 @@ app.use('/devices', deviceRoutes);
 app.use('/measurements', measurementRoutes);
 app.use('/observations', observationRoutes);
 app.use('/ambiance', ambianceRoutes);
+app.use('/places', placeRoutes);
+app.use('/users', userRoutes);
+console.log("Users route loaded");
 
 app.use((req, res) => {
   res.status(404).json({

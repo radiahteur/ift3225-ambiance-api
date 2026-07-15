@@ -6,7 +6,9 @@ const {
   createObservation,
   getObservations,
 } = require('../controllers/observations.controllers');
+
 const requireApiKey = require('../middleware/auth');
+const authenticateJWT = require('../middleware/authenticateJWT');
 
 const router = express.Router();
 
@@ -15,5 +17,20 @@ router.get('/', getObservations);
 
 // Écriture protégée par API key.
 router.post('/', requireApiKey, createObservation);
+
+// capteur ou saisie automatique
+router.post(
+ '/',
+ requireApiKey,
+ createObservation
+);
+
+
+// utilisateur React
+router.post(
+ '/user',
+ authenticateJWT,
+ createObservation
+);
 
 module.exports = router;

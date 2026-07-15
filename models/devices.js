@@ -31,6 +31,11 @@ const deviceSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    apiKey: {
+    type:String,
+    required:true,
+    unique:true
+    }
   },
   { timestamps: true }
 );

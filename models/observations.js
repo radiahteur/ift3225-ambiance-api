@@ -20,9 +20,9 @@ const observationSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    observer: {
-      type: String,
-      default: 'team',
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     crowdLevel: {
       type: String,
