@@ -16,13 +16,14 @@ const observationSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    author:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
     timestamp: {
       type: Date,
       default: Date.now,
-    },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
     },
     crowdLevel: {
       type: String,

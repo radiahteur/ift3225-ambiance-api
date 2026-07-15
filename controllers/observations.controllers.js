@@ -11,6 +11,12 @@ async function createObservation(req, res, next) {
       body.location = body.location.toLowerCase();
     }
 
+    // Si la requête provient d'un utilisateur connecté,
+    // on associe automatiquement son identifiant.
+    if (req.user) {
+      body.author = req.user.id;
+    }
+
     const observation = await Observation.create(body);
     res.status(201).json({ success: true, data: observation });
   } catch (error) {

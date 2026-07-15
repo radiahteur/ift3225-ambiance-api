@@ -15,22 +15,10 @@ const router = express.Router();
 // Lecture publique, selon la consigne de la phase 1.
 router.get('/', getObservations);
 
-// Écriture protégée par API key.
+// Collecte par capteur.
 router.post('/', requireApiKey, createObservation);
 
-// capteur ou saisie automatique
-router.post(
- '/',
- requireApiKey,
- createObservation
-);
-
-
-// utilisateur React
-router.post(
- '/user',
- authenticateJWT,
- createObservation
-);
+// Observation envoyée par un utilisateur connecté.
+router.post('/user', authenticateJWT, createObservation);
 
 module.exports = router;
