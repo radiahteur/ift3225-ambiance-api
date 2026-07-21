@@ -34,7 +34,7 @@ Le système permet :
 Le projet est divisé en 2 parties, dans un seul dépôt Git :
 
 ```
-ift3225-ambiance-api/            # Racine du dépôt — serveur backend
+ift3225-ambiance-api/            # Racine du dépôt serveur backend
 │
 ├── controllers/
 ├── routes/
@@ -124,7 +124,7 @@ Le client React pointe vers l'API via une constante `API_URL` définie dans les 
 3. Se connecter sur **Connexion** : un token JWT est renvoyé par l'API et conservé dans le `localStorage` du navigateur.
 4. La barre de navigation reflète l'état connecté (affiche "Mon compte" et "Déconnexion").
 5. Sur la page **Mon compte**, consulter son profil et le récapitulatif de ses observations soumises.
-6. Sur la carte, cliquer sur un lieu puis remplir le formulaire **"Ajouter une observation"** dans la vue détaillée — action protégée, nécessite d'être connecté (le token est automatiquement joint via `Authorization: Bearer <token>`).
+6. Sur la carte, cliquer sur un lieu puis remplir le formulaire **"Ajouter une observation"** dans la vue détaillée action protégée, nécessite d'être connecté (le token est automatiquement joint via `Authorization: Bearer <token>`).
 7. Se déconnecter retire le token ; la lecture des lieux, de l'historique et des créneaux calmes reste accessible sans connexion (lectures publiques).
 
 ### Vues de l'application cliente
@@ -301,7 +301,7 @@ Tous ces tests ont été faits avec succès sur une base de `seed/seed.js`.
 - JWT obligatoire pour les actions protégées côté utilisateur (POST /observations/user, GET /users/me, GET /users/me/observations)
 - Validation des données via les schémas Mongoose
 - Gestion des erreurs centralisée (middleware errorHandler)
-- POST /devices pas protégé pour l'instant — c'est une faille connue, voir le rapport pour la solution qu'on propose
+- POST /devices pas protégé pour l'instant c'est une faille connue, voir le rapport pour la solution qu'on propose
 
 ## Dépendances principales — Phase 2
 
