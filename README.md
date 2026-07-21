@@ -3,13 +3,20 @@ Projet réalisé pour le cours IFT3225: Développement d'API et services Web
 Auteures: Radiah Mohamed Assowe 20229344, Fatoumata Mane 20214863
 
 ## Description
-Ambiance API est une API REST faite avec Node.js et Express. Elle sert à collecter, stocker et analyser des données d'ambiance captées par un téléphone (via Phyphox) et par des observations qu'on note nous-mêmes. Le but, c'est de transformer ces données brutes en indicateurs simples sur l'ambiance d'un lieu : historique, heures calmes, score de confort.
+Ambiance API est une API REST faite avec Node.js et Express. Elle sert à collecter, stocker et interpréter des données d'ambiance captées par un téléphone (via Phyphox) et par des observations qu'on note nous-mêmes. Le but, c'est de transformer ces données brutes en indicateurs simples sur l'ambiance d'un lieu : historique, heures calmes, score de confort.
+
+La phase 1 du projet a mis en place l'infrastructure de collecte : réception des données, persistance MongoDB et expositions d'endpoints permettant d'interroger l'ambiance d'un lieu.
+
+La phase 2 du projet ajoute une application cliente React pour visualiser l'ambiance des lieux sur une carte, consulter un portrait détaillé (historique, créneaux calmes, classification) et interagir avec le système grâce à un compte utilisateur.
 
 Le système permet :
 1-d'enregistrer des devices (téléphones / capteurs)
 2-de collecter des mesures environnementales (son, lumière, mouvement)
-3-d'ajouter des observations humaines (le fallback manuel)
-4-d'analyser l'ambiance d'un lieu (historique, heures calmes, score de confort)
+3-d'ajouter des observations humaines associées à un utilisateur (le fallback manuel)
+4-de classifier l'ambiance d'un lieu (historique, heures calmes, score de confort)
+5-de visualiser les lieux sur une carte
+6-de créer un compte pour soumettre des observations protégées
+7-de consulter ses propres contributions
 
 ## Prérequis du projet
 - Node.js v18 ou plus
@@ -46,27 +53,56 @@ Le serveur tourne par défaut sur `http://localhost:3000`.
 - dotenv
 - morgan (pour logger les requêtes dans le terminal)
 - Postman (tests API)
+- React.js (application cliente)
+- React Router (navigation côté client)
+- Axios (communication avec API)
+- Bibliothèque de carte interactive (Leaflet par exemple)
+- JWT (authentification utilisateur)
 
 ## Architecture du projet
 
+Le projet est divisé en 2 parties :
+
 ```
-ambiance-api/
+
+Projet/
 │
-├── controllers/
-├── routes/
-├── models/
-├── middleware/
-├── seed/
-├── config/
-├── server.js
-├── app.js
-├── .env.example
-└── .env ( à créer soi-même)
+├── ambiance-api/# Serveur backend
+│ ├── controllers/
+│ ├── routes/
+│ ├── models/
+│ ├── middleware/
+│ ├── seed/
+│ ├── config/
+│ ├── server.js
+│ ├── app.js
+│ ├── insert-phase2-data.js
+│ ├── .env.example
+│ └── .env (à créer soi-même)
+│
+└── ambiance-client/# Application React
+├── public/
+├── src/
+│ ├── api/
+│ ├── pages/
+│ ├── components/
+│ ├── assets/
+│ ├── App.css
+│ ├── index.css
+│ ├── App.jsx
+│ └── main.jsx
+└── index.html
+
 ```
 
 ## Authentification
 
-Les routes qui écrivent dans la base (`POST /measurements`, `POST /observations`) demandent une clé API.
+Deux mécanismes d'authentification sont utilisés.
+
+- Authentification par clé API :
+
+Les appareils de collecte utilisent une clé API.
+Les routes qui écrivent dans la base (`POST /measurements`, `POST /observations`) demandent cette clé.
 
 Header requis :
 ```
@@ -76,9 +112,24 @@ x-api-key: key123
 Les reponses vu selon les cas :
 - Pas d'en-tête : `401 Unauthorized`, code `MISSING_API_KEY`
 - Mauvaise clé : `403 Forbidden`, code `INVALID_API_KEY`
-- Bonne clé :la requête passe normalement
+- Bonne clé : la requête passe normalement
 
 Les routes `GET` restent ouvertes à tout le monde. `POST /devices` n'est volontairement pas protégé pour l'instant, c'est une faille expliquée dans le rapport.
+
+- Authentification utilisateur JWT :
+
+Les utilisateurs de l'application React utilisent un compte personnel.
+
+Flux :
+1-L'utilisateur crée un compte avec `/users/register`
+2-Il se connecte avec `/users/login`
+3-Le serveur vérifie le mot de passe
+4-Le serveur génère un token JWT
+5-Le client conserve le token
+6-Authorization : Bearer <token> est envoyé par le client pour une action protégée.
+7-Le middleware `authenticateJWT` vérifie le token avant d'autoriser la requête.
+
+Soumettre une observation utilisateur, Consulter son profil, Consulter ses contributions sont les actions protégées.
 
 ## Table des endpoints
 La structure de chaque endpoints listé:
@@ -101,6 +152,20 @@ La structure de chaque endpoints listé:
 | GET | `/ambiance/:location/quiet-hours` | Publique | Les heures habituellement les plus calmes |
 
 | GET | `/ambiance/:location/comfort-score` | Publique | Score de confort global d'un lieu |
+
+| POST | `/users/register` | Aucune | Création d'un compte utilisateur |
+
+| POST | `/users/login` | Aucune | Connexion et génération JWT |
+
+| GET | `/users/me` | JWT | Informations du compte connecté |
+
+| GET | `/users/me/observations` | JWT | Historique des observations personnelles |
+
+| GET | `/places` | Publique | Liste des lieux avec coordonnées GPS |
+
+| GET | `/places/:id` | Publique | Détails d'un lieu |
+
+| POST | `/observations/user` | JWT | Ajouter une observation liée à un utilisateur |
 
 ## Exemples de requêtes
 **POST /devices**
@@ -138,6 +203,42 @@ La structure de chaque endpoints listé:
 **GET /measurements?location=cour_avant&from=2026-06-08T00:00:00Z&to=2026-06-08T23:59:59Z**
 Ça retourne les mesures de cette plage de dates pour le lieu demandé.
 
+
+## Évolution des modèles de données
+- Place
+```json
+{
+"name":"bibliotheque",
+"location":"bibliotheque",
+"latitude":45.504,
+"longitude":-73.613
+}
+```
+Ces coordonnées permettent l'affichage sur une carte.
+
+- User
+```json
+{
+"username":"radiah",
+"email":"radiah@test.com",
+"favorites":[]
+}
+```
+Le mot de passe est stocké sous forme hashée avec bcrypt.
+
+- Observation
+```json
+{
+"location":"bibliotheque",
+"ambiance":"quiet",
+"author":"ObjectId utilisateur"
+}
+```
+Une observation possède maintenant un autheur ce qui permet de retrouver les contributions d'un utilisateur.
+
+
+
+
 ## Tests (Postman)
 On a testé l'API dans Postman en suivant ces étapes :
 
@@ -146,6 +247,8 @@ On a testé l'API dans Postman en suivant ces étapes :
 3. **Measurements** — `POST /measurements` avec la bonne clé, puis `GET /measurements` avec et sans filtres (`location`, `from`, `to`)
 4. **Observations** — `POST /observations` avec la bonne clé, `GET /observations`
 5. **Analyse** — `GET /ambiance/cour_avant/history`, `GET /ambiance/cour_avant/quiet-hours`, `GET /ambiance/cour_avant/comfort-score`
+6. **Utilisateurs** — `POST /users/register`, `POST /users/login`, `GET /users/me` avec Authorization: Bearer token
+7. **Observations utilisateur** — `POST /observations/user`, `GET /users/me/observations`
 
 Tous ces tests ont été faits avec succès sur une base de `seed/seed.js`.
 
@@ -154,3 +257,13 @@ Tous ces tests ont été faits avec succès sur une base de `seed/seed.js`.
 - Validation des données via les schémas Mongoose
 - Gestion des erreurs centralisée (middleware `errorHandler`)
 - `POST /devices` pas protégé pour l'instant — c'est une faille connue, voir le rapport pour la solution qu'on propose
+
+## Dépendances principales Phase 2
+**Backend**
+- bcryptjs : hashage des mots de passe
+- jsonwebtoken : génération et validation JWT
+
+**Frontend**
+- React
+- Axios
+- Leaflet

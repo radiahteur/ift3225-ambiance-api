@@ -41,9 +41,4 @@ router.get(
     getMyObservations
 );
 
-console.log(router.stack.map(r => ({
-  path: r.route?.path,
-  methods: r.route?.methods
-})));
-
 module.exports = router;
