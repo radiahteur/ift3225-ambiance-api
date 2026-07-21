@@ -13,7 +13,7 @@ const {
 
 const authenticateJWT = require('../middleware/authenticateJWT');
 
-console.log("users.js chargé");
+
 
 const router = express.Router();
 

@@ -9,8 +9,9 @@ function Home() {
       <nav style={{ marginBottom: "20px" }}>
         <Link to="/">Accueil</Link>{" "}
         <Link to="/login">Connexion</Link>{" "}
+        <Link to="/register">Inscription</Link>{" "}
         <Link to="/account">Mon compte</Link>
-      </nav>
+    </nav>
 
       <h2>Carte des lieux</h2>
 

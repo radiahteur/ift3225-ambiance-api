@@ -1,20 +1,22 @@
 import { useState } from "react";
+import { register } from "../api/auth";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    console.log({
-      name,
-      email,
-      password,
-    });
+    try {
+      await register(name, email, password);
 
-    alert("Inscription envoyée !");
+      alert("Compte créé avec succès !");
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de l'inscription");
+    }
   };
 
   return (

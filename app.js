@@ -43,7 +43,7 @@ app.use('/observations', observationRoutes);
 app.use('/ambiance', ambianceRoutes);
 app.use('/places', placeRoutes);
 app.use('/users', userRoutes);
-console.log("Users route loaded");
+
 
 app.use((req, res) => {
   res.status(404).json({

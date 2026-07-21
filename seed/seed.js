@@ -23,6 +23,7 @@ const connectDB = require('../config/db');
 const Device = require('../models/devices');
 const Measurement = require('../models/measurements');
 const Observation = require('../models/observations');
+const Place = require("../models/places");
 
 const devices = [
   {
@@ -31,7 +32,32 @@ const devices = [
     location: 'cour_avant',
     type: 'phone',
     description: 'Téléphone utilisé pour les sessions de collecte Phyphox (amplitude audio).',
+    apiKey: 'key123'
   },
+];
+
+const places = [
+  {
+    name: "Bibliothèque",
+    location: "bibliotheque",
+    latitude: 45.5019,
+    longitude: -73.5674,
+    description: "Bibliothèque principale"
+  },
+  {
+    name: "Métro",
+    location: "metro",
+    latitude: 45.5088,
+    longitude: -73.5878,
+    description: "Station de métro"
+  },
+  {
+    name: "Cafétéria",
+    location: "cafeteria",
+    latitude: 45.4972,
+    longitude: -73.6104,
+    description: "Cafétéria étudiante"
+  }
 ];
 
 const observations = [
@@ -176,11 +202,15 @@ async function seed() {
 
   console.log('Suppression des données existantes...');
   await Device.deleteMany({});
+  await Place.deleteMany({});
   await Measurement.deleteMany({});
   await Observation.deleteMany({});
 
   console.log('Insertion des devices...');
   await Device.insertMany(devices);
+
+  console.log("Insertion des lieux...");
+  await Place.insertMany(places);
 
   console.log('Insertion des mesures...');
   await Measurement.insertMany(measurements);

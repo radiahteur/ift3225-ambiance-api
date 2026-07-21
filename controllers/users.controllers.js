@@ -1,5 +1,3 @@
-
-
 const User = require('../models/users');
 const Observation = require('../models/observations');
 
@@ -8,9 +6,9 @@ const jwt = require('jsonwebtoken');
 
 
 // Création d'un compte utilisateur
-async function register(req,res,next){
+async function register(req, res, next) {
 
-    try{
+    try {
 
         const {
             username,
@@ -18,56 +16,48 @@ async function register(req,res,next){
             password
         } = req.body;
 
-
         const existingUser = await User.findOne({
             email
         });
 
-
-        if(existingUser){
+        if (existingUser) {
 
             return res.status(400).json({
-                success:false,
-                error:{
-                    code:"EMAIL_EXISTS",
-                    message:"Email already used"
+                success: false,
+                error: {
+                    code: "EMAIL_EXISTS",
+                    message: "Email already used"
                 }
             });
 
         }
-
 
         const hashedPassword = await bcrypt.hash(
             password,
             10
         );
 
-
         const user = await User.create({
 
             username,
-
             email,
-
-            password:hashedPassword
+            password: hashedPassword
 
         });
-
 
         res.status(201).json({
 
-            success:true,
+            success: true,
 
-            data:{
-                id:user._id,
-                username:user.username,
-                email:user.email
+            data: {
+                id: user._id,
+                username: user.username,
+                email: user.email
             }
 
         });
 
-
-    }catch(error){
+    } catch (error) {
 
         next(error);
 
@@ -76,176 +66,131 @@ async function register(req,res,next){
 }
 
 
+async function login(req, res, next) {
 
-// Connexion utilisateur
-async function login(req,res,next){
+    try {
 
-    try{
+        const { email, password } = req.body;
 
-        const {
-            email,
-            password
-        } = req.body;
+        const user = await User.findOne({ email });
 
-
-        const user = await User.findOne({
-            email
-        });
-
-
-        if(!user){
-
+        if (!user) {
             return res.status(401).json({
-                success:false,
-                error:{
-                    code:"INVALID_LOGIN",
-                    message:"Invalid email or password"
+                success: false,
+                error: {
+                    code: "INVALID_CREDENTIALS",
+                    message: "Email ou mot de passe incorrect"
                 }
             });
-
         }
 
+        const isMatch = await bcrypt.compare(password, user.password);
 
-        const validPassword =
-            await bcrypt.compare(
-                password,
-                user.password
-            );
-
-
-        if(!validPassword){
-
+        if (!isMatch) {
             return res.status(401).json({
-                success:false,
-                error:{
-                    code:"INVALID_LOGIN",
-                    message:"Invalid email or password"
+                success: false,
+                error: {
+                    code: "INVALID_CREDENTIALS",
+                    message: "Email ou mot de passe incorrect"
                 }
             });
-
         }
-
 
         const token = jwt.sign(
-
-            {
-                id:user._id,
-                email:user.email
-            },
-
+            { id: user._id },
             process.env.JWT_SECRET,
-
-            {
-                expiresIn:"24h"
-            }
-
+            { expiresIn: "1d" }
         );
 
-
-        res.json({
-
-            success:true,
-
-            data:{
-                token
+        res.status(200).json({
+            success: true,
+            data: {
+                token,
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                }
             }
-
         });
 
-
-    }catch(error){
-
+    } catch (error) {
         next(error);
-
     }
-
 }
 
-
-
 // Informations de l'utilisateur connecté
-async function getMe(req,res,next){
+async function getMe(req, res, next) {
 
-    try{
-
+    try {
 
         const user = await User.findById(
             req.user.id
-        )
-        .populate("favorites");
+        ).populate("favorites");
 
-
-        if(!user){
+        if (!user) {
 
             return res.status(404).json({
-                success:false,
-                error:{
-                    code:"USER_NOT_FOUND",
-                    message:"User not found"
+                success: false,
+                error: {
+                    code: "USER_NOT_FOUND",
+                    message: "User not found"
                 }
             });
 
         }
 
-
         res.json({
 
-            success:true,
+            success: true,
 
-            data:{
-                id:user._id,
-                username:user.username,
-                email:user.email,
-                favorites:user.favorites
+            data: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                favorites: user.favorites
             }
 
         });
 
-
-    }catch(error){
+    } catch (error) {
 
         next(error);
 
     }
 
 }
-
 
 
 // Observations envoyées par l'utilisateur
-async function getMyObservations(req,res,next){
+async function getMyObservations(req, res, next) {
 
-    try{
-
+    try {
 
         const observations =
             await Observation.find({
-                author:req.user.id
-            })
-            .sort({
-                timestamp:-1
+                author: req.user.id
+            }).sort({
+                timestamp: -1
             });
-
 
         res.json({
 
-            success:true,
+            success: true,
 
-            count:observations.length,
+            count: observations.length,
 
-            data:observations
+            data: observations
 
         });
 
-
-    }catch(error){
+    } catch (error) {
 
         next(error);
 
     }
 
 }
-
 
 
 module.exports = {
