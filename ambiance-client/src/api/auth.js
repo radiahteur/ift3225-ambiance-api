@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 // Fonctions d'authentification côté client.
 // Gère l'inscription et la connexion en appelant l'API.
+=======
+// Services d'authentification.
+// Gère l'inscription, la connexion et les requêtes liées aux utilisateurs.
+
+// Instance Axios utilisée pour communiquer avec le backend.
+>>>>>>> a96bc67 (Ajout de commentaires)
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";

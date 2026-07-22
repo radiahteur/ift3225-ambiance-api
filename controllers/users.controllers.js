@@ -1,3 +1,6 @@
+// Contrôleur des utilisateurs.
+// Gère l'inscription, la connexion et les informations du compte utilisateur.
+
 const User = require('../models/users');
 const Observation = require('../models/observations');
 

@@ -1,3 +1,6 @@
+// Connexion à la base de données MongoDB Atlas.
+// Utilise Mongoose pour établir la connexion.
+
 const mongoose = require("mongoose");
 
 async function connectDB() {

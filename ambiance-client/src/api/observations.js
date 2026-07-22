@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 // Soumission d'une observation par un usager connecté.
 // Le token JWT stocké dans localStorage est envoyé
 // dans l'en-tête Authorization pour authentifier la requête.
+=======
+// Services liés aux observations.
+// Permet de consulter et d'ajouter des observations d'ambiance.
+
+// Instance Axios utilisée pour communiquer avec le backend.
+>>>>>>> a96bc67 (Ajout de commentaires)
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";

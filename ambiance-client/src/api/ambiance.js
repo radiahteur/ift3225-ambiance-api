@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 // Fonctions liées à l'ambiance d'un lieu.
 // Regroupe les appels vers l'historique, les créneaux calmes
 // et le score de confort renvoyés par l'API.
+=======
+// Services liés aux données d'ambiance.
+// Permet de récupérer les indicateurs calculés par l'API.
+
+// Instance Axios utilisée pour communiquer avec le backend.
+>>>>>>> a96bc67 (Ajout de commentaires)
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";

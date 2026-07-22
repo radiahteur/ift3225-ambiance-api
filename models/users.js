@@ -1,4 +1,5 @@
-
+// Modèle représentant un utilisateur.
+// Les utilisateurs peuvent s'authentifier et enregistrer des lieux favoris.
 
 const mongoose = require('mongoose');
 
