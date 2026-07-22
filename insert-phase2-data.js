@@ -1,13 +1,3 @@
-// Script d'insertion des lieux et des mesures de la phase 2.
-//
-// À PLACER À LA RACINE de ton dossier backend (ift3225-ambiance-api),
-// au même niveau que server.js, à côté du fichier measurements_data.json
-// (les deux fichiers doivent être dans le même dossier).
-//
-// Lancer avec : node insert-phase2-data.js
-// (le serveur Express n'a PAS besoin de tourner pour ça, ce script se connecte
-// directement à MongoDB)
-
 require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('fs');
@@ -47,24 +37,29 @@ const places = [
 const deviceIds = {
   mercier: 'phyphox-iphone17-2',
   'saint-leonard': 'phyphox-iphone14-3',
-  'place-darmes': 'phyphox-iphone15-3-approx',
+  'place-darmes': 'phyphox-iphone15-3',
 };
 
 async function run() {
   await mongoose.connect(process.env.MONGO_URI);
   console.log('Connecté à MongoDB');
 
-  // 1. Créer ou mettre à jour les 3 lieux (upsert par 'location')
+  // 1. Créer ou mettre à jour les 3 lieux
   for (const place of places) {
     const result = await Place.findOneAndUpdate(
       { location: place.location },
       place,
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     console.log(`Lieu prêt : ${result.name} (${result.location})`);
   }
 
-  // 2. Insérer les mesures pour chaque lieu
+  // 2. Retirer toute mesure existante pour ces 3 lieux (nettoyage avant réinsertion)
+  const locations = Object.keys(measurementsData);
+  const del = await Measurement.deleteMany({ location: { $in: locations } });
+  console.log(`${del.deletedCount} ancienne(s) mesure(s) supprimée(s) pour : ${locations.join(', ')}`);
+
+  // 3. Insérer les nouvelles mesures
   let totalInserted = 0;
 
   for (const [location, points] of Object.entries(measurementsData)) {

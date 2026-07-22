@@ -1,3 +1,5 @@
+// Fonctions d'authentification côté client.
+// Gère l'inscription et la connexion en appelant l'API.
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";

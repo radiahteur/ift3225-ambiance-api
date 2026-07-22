@@ -1,3 +1,6 @@
+// Soumission d'une observation par un usager connecté.
+// Le token JWT stocké dans localStorage est envoyé
+// dans l'en-tête Authorization pour authentifier la requête.
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";

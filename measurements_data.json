@@ -1,70 +1,384 @@
 {
   "mercier": [
-    { "timestamp": "2026-07-17T09:50:18.104643Z", "soundLevelDb": -62.81 },
-    { "timestamp": "2026-07-17T09:52:18.104643Z", "soundLevelDb": -63.18 },
-    { "timestamp": "2026-07-17T09:54:18.104643Z", "soundLevelDb": -63.09 },
-    { "timestamp": "2026-07-17T09:56:18.104643Z", "soundLevelDb": -62.16 },
-    { "timestamp": "2026-07-17T09:58:18.104643Z", "soundLevelDb": -61.72 },
-    { "timestamp": "2026-07-17T10:00:18.104643Z", "soundLevelDb": -62.72 },
-    { "timestamp": "2026-07-17T10:02:18.104643Z", "soundLevelDb": -63.19 },
-    { "timestamp": "2026-07-17T10:04:18.104643Z", "soundLevelDb": -62.83 },
-    { "timestamp": "2026-07-17T10:06:18.104643Z", "soundLevelDb": -62.48 },
-    { "timestamp": "2026-07-17T10:08:18.104643Z", "soundLevelDb": -63.16 },
-    { "timestamp": "2026-07-17T10:10:18.104643Z", "soundLevelDb": -61.08 },
-    { "timestamp": "2026-07-17T10:12:18.104643Z", "soundLevelDb": -61.64 },
-    { "timestamp": "2026-07-17T10:14:18.104643Z", "soundLevelDb": -61.71 },
-    { "timestamp": "2026-07-17T15:07:54.615836Z", "soundLevelDb": -68.01 },
-    { "timestamp": "2026-07-17T15:09:54.615836Z", "soundLevelDb": -69.85 },
-    { "timestamp": "2026-07-17T15:11:54.615836Z", "soundLevelDb": -68.76 },
-    { "timestamp": "2026-07-17T15:13:54.615836Z", "soundLevelDb": -67.76 },
-    { "timestamp": "2026-07-17T15:15:54.615836Z", "soundLevelDb": -69.48 },
-    { "timestamp": "2026-07-17T15:17:54.615836Z", "soundLevelDb": -68.38 },
-    { "timestamp": "2026-07-17T15:19:54.615836Z", "soundLevelDb": -69.42 },
-    { "timestamp": "2026-07-17T15:21:54.615836Z", "soundLevelDb": -68.79 },
-    { "timestamp": "2026-07-17T15:23:54.615836Z", "soundLevelDb": -69.42 },
-    { "timestamp": "2026-07-17T15:25:54.615836Z", "soundLevelDb": -69.3 },
-    { "timestamp": "2026-07-17T15:27:54.615836Z", "soundLevelDb": -68.04 },
-    { "timestamp": "2026-07-17T15:29:54.615836Z", "soundLevelDb": -63.81 },
-    { "timestamp": "2026-07-18T10:09:06.402908Z", "soundLevelDb": -62.63 },
-    { "timestamp": "2026-07-18T10:11:06.402908Z", "soundLevelDb": -65.48 },
-    { "timestamp": "2026-07-18T10:13:06.402908Z", "soundLevelDb": -65.86 },
-    { "timestamp": "2026-07-18T10:15:06.402908Z", "soundLevelDb": -65.91 },
-    { "timestamp": "2026-07-18T10:17:06.402908Z", "soundLevelDb": -65.35 },
-    { "timestamp": "2026-07-18T10:19:06.402908Z", "soundLevelDb": -64.94 },
-    { "timestamp": "2026-07-18T10:21:06.402908Z", "soundLevelDb": -65.91 },
-    { "timestamp": "2026-07-18T10:23:06.402908Z", "soundLevelDb": -66.17 }
+    {
+      "timestamp": "2026-07-17T09:50:18.104643Z",
+      "soundLevelDb": -62.81
+    },
+    {
+      "timestamp": "2026-07-17T09:52:18.104643Z",
+      "soundLevelDb": -63.18
+    },
+    {
+      "timestamp": "2026-07-17T09:54:18.104643Z",
+      "soundLevelDb": -63.09
+    },
+    {
+      "timestamp": "2026-07-17T09:56:18.104643Z",
+      "soundLevelDb": -62.16
+    },
+    {
+      "timestamp": "2026-07-17T09:58:18.104643Z",
+      "soundLevelDb": -61.72
+    },
+    {
+      "timestamp": "2026-07-17T10:00:18.104643Z",
+      "soundLevelDb": -62.72
+    },
+    {
+      "timestamp": "2026-07-17T10:02:18.104643Z",
+      "soundLevelDb": -63.19
+    },
+    {
+      "timestamp": "2026-07-17T10:04:18.104643Z",
+      "soundLevelDb": -62.83
+    },
+    {
+      "timestamp": "2026-07-17T10:06:18.104643Z",
+      "soundLevelDb": -62.48
+    },
+    {
+      "timestamp": "2026-07-17T10:08:18.104643Z",
+      "soundLevelDb": -63.16
+    },
+    {
+      "timestamp": "2026-07-17T10:10:18.104643Z",
+      "soundLevelDb": -61.08
+    },
+    {
+      "timestamp": "2026-07-17T10:12:18.104643Z",
+      "soundLevelDb": -61.64
+    },
+    {
+      "timestamp": "2026-07-17T10:14:18.104643Z",
+      "soundLevelDb": -61.71
+    },
+    {
+      "timestamp": "2026-07-17T15:07:54.615836Z",
+      "soundLevelDb": -68.01
+    },
+    {
+      "timestamp": "2026-07-17T15:09:54.615836Z",
+      "soundLevelDb": -69.85
+    },
+    {
+      "timestamp": "2026-07-17T15:11:54.615836Z",
+      "soundLevelDb": -68.76
+    },
+    {
+      "timestamp": "2026-07-17T15:13:54.615836Z",
+      "soundLevelDb": -67.76
+    },
+    {
+      "timestamp": "2026-07-17T15:15:54.615836Z",
+      "soundLevelDb": -69.48
+    },
+    {
+      "timestamp": "2026-07-17T15:17:54.615836Z",
+      "soundLevelDb": -68.38
+    },
+    {
+      "timestamp": "2026-07-17T15:19:54.615836Z",
+      "soundLevelDb": -69.42
+    },
+    {
+      "timestamp": "2026-07-17T15:21:54.615836Z",
+      "soundLevelDb": -68.79
+    },
+    {
+      "timestamp": "2026-07-17T15:23:54.615836Z",
+      "soundLevelDb": -69.42
+    },
+    {
+      "timestamp": "2026-07-17T15:25:54.615836Z",
+      "soundLevelDb": -69.3
+    },
+    {
+      "timestamp": "2026-07-17T15:27:54.615836Z",
+      "soundLevelDb": -68.04
+    },
+    {
+      "timestamp": "2026-07-17T15:29:54.615836Z",
+      "soundLevelDb": -63.81
+    },
+    {
+      "timestamp": "2026-07-18T10:09:06.402908Z",
+      "soundLevelDb": -62.63
+    },
+    {
+      "timestamp": "2026-07-18T10:11:06.402908Z",
+      "soundLevelDb": -65.48
+    },
+    {
+      "timestamp": "2026-07-18T10:13:06.402908Z",
+      "soundLevelDb": -65.86
+    },
+    {
+      "timestamp": "2026-07-18T10:15:06.402908Z",
+      "soundLevelDb": -65.91
+    },
+    {
+      "timestamp": "2026-07-18T10:17:06.402908Z",
+      "soundLevelDb": -65.35
+    },
+    {
+      "timestamp": "2026-07-18T10:19:06.402908Z",
+      "soundLevelDb": -64.94
+    },
+    {
+      "timestamp": "2026-07-18T10:21:06.402908Z",
+      "soundLevelDb": -65.91
+    },
+    {
+      "timestamp": "2026-07-18T10:23:06.402908Z",
+      "soundLevelDb": -66.17
+    },
+    {
+      "timestamp": "2026-07-21T23:17:49.710901Z",
+      "soundLevelDb": -62.85
+    },
+    {
+      "timestamp": "2026-07-21T23:19:49.710901Z",
+      "soundLevelDb": -63.12
+    },
+    {
+      "timestamp": "2026-07-21T23:21:49.710901Z",
+      "soundLevelDb": -64.73
+    },
+    {
+      "timestamp": "2026-07-21T23:23:49.710901Z",
+      "soundLevelDb": -66.1
+    },
+    {
+      "timestamp": "2026-07-21T23:25:49.710901Z",
+      "soundLevelDb": -64.15
+    },
+    {
+      "timestamp": "2026-07-21T23:27:49.710901Z",
+      "soundLevelDb": -61.22
+    },
+    {
+      "timestamp": "2026-07-21T23:29:49.710901Z",
+      "soundLevelDb": -61.75
+    },
+    {
+      "timestamp": "2026-07-21T23:31:49.710901Z",
+      "soundLevelDb": -64.83
+    }
   ],
   "saint-leonard": [
-    { "timestamp": "2026-07-17T05:52:14.972180Z", "soundLevelDb": -52.09 },
-    { "timestamp": "2026-07-17T05:54:14.972180Z", "soundLevelDb": -52.15 },
-    { "timestamp": "2026-07-17T05:56:14.972180Z", "soundLevelDb": -50.67 },
-    { "timestamp": "2026-07-17T05:58:14.972180Z", "soundLevelDb": -52.51 },
-    { "timestamp": "2026-07-17T06:00:14.972180Z", "soundLevelDb": -51.67 },
-    { "timestamp": "2026-07-17T06:02:14.972180Z", "soundLevelDb": -53.95 },
-    { "timestamp": "2026-07-18T05:10:41.850545Z", "soundLevelDb": -55.47 },
-    { "timestamp": "2026-07-18T05:12:41.850545Z", "soundLevelDb": -56.66 },
-    { "timestamp": "2026-07-18T05:14:41.850545Z", "soundLevelDb": -56.8 },
-    { "timestamp": "2026-07-18T05:16:41.850545Z", "soundLevelDb": -55.59 },
-    { "timestamp": "2026-07-18T05:18:41.850545Z", "soundLevelDb": -57.27 },
-    { "timestamp": "2026-07-18T05:20:41.850545Z", "soundLevelDb": -57.37 },
-    { "timestamp": "2026-07-18T05:22:41.850545Z", "soundLevelDb": -57.29 },
-    { "timestamp": "2026-07-18T05:24:41.850545Z", "soundLevelDb": -57.33 },
-    { "timestamp": "2026-07-18T05:26:41.850545Z", "soundLevelDb": -56.85 },
-    { "timestamp": "2026-07-18T09:28:25.834904Z", "soundLevelDb": -59.12 },
-    { "timestamp": "2026-07-18T09:30:25.834904Z", "soundLevelDb": -59.69 },
-    { "timestamp": "2026-07-18T09:32:25.834904Z", "soundLevelDb": -59.81 },
-    { "timestamp": "2026-07-18T09:34:25.834904Z", "soundLevelDb": -59.69 },
-    { "timestamp": "2026-07-18T09:36:25.834904Z", "soundLevelDb": -59.67 },
-    { "timestamp": "2026-07-18T09:38:25.834904Z", "soundLevelDb": -59.67 },
-    { "timestamp": "2026-07-18T09:40:25.834904Z", "soundLevelDb": -59.8 },
-    { "timestamp": "2026-07-18T09:42:25.834904Z", "soundLevelDb": -59.67 },
-    { "timestamp": "2026-07-18T09:44:25.834904Z", "soundLevelDb": -59.91 },
-    { "timestamp": "2026-07-18T09:46:25.834904Z", "soundLevelDb": -59.58 }
+    {
+      "timestamp": "2026-07-17T05:52:14.972180Z",
+      "soundLevelDb": -52.09
+    },
+    {
+      "timestamp": "2026-07-17T05:54:14.972180Z",
+      "soundLevelDb": -52.15
+    },
+    {
+      "timestamp": "2026-07-17T05:56:14.972180Z",
+      "soundLevelDb": -50.67
+    },
+    {
+      "timestamp": "2026-07-17T05:58:14.972180Z",
+      "soundLevelDb": -52.51
+    },
+    {
+      "timestamp": "2026-07-17T06:00:14.972180Z",
+      "soundLevelDb": -51.67
+    },
+    {
+      "timestamp": "2026-07-17T06:02:14.972180Z",
+      "soundLevelDb": -53.95
+    },
+    {
+      "timestamp": "2026-07-18T05:10:41.850545Z",
+      "soundLevelDb": -55.47
+    },
+    {
+      "timestamp": "2026-07-18T05:12:41.850545Z",
+      "soundLevelDb": -56.66
+    },
+    {
+      "timestamp": "2026-07-18T05:14:41.850545Z",
+      "soundLevelDb": -56.8
+    },
+    {
+      "timestamp": "2026-07-18T05:16:41.850545Z",
+      "soundLevelDb": -55.59
+    },
+    {
+      "timestamp": "2026-07-18T05:18:41.850545Z",
+      "soundLevelDb": -57.27
+    },
+    {
+      "timestamp": "2026-07-18T05:20:41.850545Z",
+      "soundLevelDb": -57.37
+    },
+    {
+      "timestamp": "2026-07-18T05:22:41.850545Z",
+      "soundLevelDb": -57.29
+    },
+    {
+      "timestamp": "2026-07-18T05:24:41.850545Z",
+      "soundLevelDb": -57.33
+    },
+    {
+      "timestamp": "2026-07-18T05:26:41.850545Z",
+      "soundLevelDb": -56.85
+    },
+    {
+      "timestamp": "2026-07-18T09:28:25.834904Z",
+      "soundLevelDb": -59.12
+    },
+    {
+      "timestamp": "2026-07-18T09:30:25.834904Z",
+      "soundLevelDb": -59.69
+    },
+    {
+      "timestamp": "2026-07-18T09:32:25.834904Z",
+      "soundLevelDb": -59.81
+    },
+    {
+      "timestamp": "2026-07-18T09:34:25.834904Z",
+      "soundLevelDb": -59.69
+    },
+    {
+      "timestamp": "2026-07-18T09:36:25.834904Z",
+      "soundLevelDb": -59.67
+    },
+    {
+      "timestamp": "2026-07-18T09:38:25.834904Z",
+      "soundLevelDb": -59.67
+    },
+    {
+      "timestamp": "2026-07-18T09:40:25.834904Z",
+      "soundLevelDb": -59.8
+    },
+    {
+      "timestamp": "2026-07-18T09:42:25.834904Z",
+      "soundLevelDb": -59.67
+    },
+    {
+      "timestamp": "2026-07-18T09:44:25.834904Z",
+      "soundLevelDb": -59.91
+    },
+    {
+      "timestamp": "2026-07-18T09:46:25.834904Z",
+      "soundLevelDb": -59.58
+    },
+    {
+      "timestamp": "2026-07-21T23:04:36.589309Z",
+      "soundLevelDb": -50.73
+    },
+    {
+      "timestamp": "2026-07-21T23:06:36.589309Z",
+      "soundLevelDb": -52.94
+    },
+    {
+      "timestamp": "2026-07-21T23:08:36.589309Z",
+      "soundLevelDb": -51.69
+    },
+    {
+      "timestamp": "2026-07-21T23:10:36.589309Z",
+      "soundLevelDb": -53.34
+    },
+    {
+      "timestamp": "2026-07-21T23:12:36.589309Z",
+      "soundLevelDb": -54.09
+    },
+    {
+      "timestamp": "2026-07-21T23:14:36.589309Z",
+      "soundLevelDb": -54.5
+    },
+    {
+      "timestamp": "2026-07-21T23:16:36.589309Z",
+      "soundLevelDb": -53.8
+    }
   ],
   "place-darmes": [
-    { "timestamp": "2026-07-18T01:19:39.419731Z", "soundLevelDb": -56.8 },
-    { "timestamp": "2026-07-18T08:09:56.905890Z", "soundLevelDb": -60.46 },
-    { "timestamp": "2026-07-19T22:43:39.843496Z", "soundLevelDb": -52.21 },
-    { "timestamp": "2026-07-20T17:43:00.679143Z", "soundLevelDb": -55.17 }
+    {
+      "timestamp": "2026-07-21T21:16:48.352832Z",
+      "soundLevelDb": -53.49
+    },
+    {
+      "timestamp": "2026-07-21T21:18:48.352832Z",
+      "soundLevelDb": -53.15
+    },
+    {
+      "timestamp": "2026-07-21T21:20:48.352832Z",
+      "soundLevelDb": -52.25
+    },
+    {
+      "timestamp": "2026-07-21T21:22:48.352832Z",
+      "soundLevelDb": -53.47
+    },
+    {
+      "timestamp": "2026-07-21T21:24:48.352832Z",
+      "soundLevelDb": -52.62
+    },
+    {
+      "timestamp": "2026-07-21T21:26:48.352832Z",
+      "soundLevelDb": -53.19
+    },
+    {
+      "timestamp": "2026-07-21T21:28:48.352832Z",
+      "soundLevelDb": -52.58
+    },
+    {
+      "timestamp": "2026-07-21T23:24:43.919996Z",
+      "soundLevelDb": -55.11
+    },
+    {
+      "timestamp": "2026-07-21T23:26:43.919996Z",
+      "soundLevelDb": -54.42
+    },
+    {
+      "timestamp": "2026-07-21T23:28:43.919996Z",
+      "soundLevelDb": -55.19
+    },
+    {
+      "timestamp": "2026-07-21T23:30:43.919996Z",
+      "soundLevelDb": -54.61
+    },
+    {
+      "timestamp": "2026-07-21T23:32:43.919996Z",
+      "soundLevelDb": -54.73
+    },
+    {
+      "timestamp": "2026-07-21T23:34:43.919996Z",
+      "soundLevelDb": -54.9
+    },
+    {
+      "timestamp": "2026-07-21T23:36:43.919996Z",
+      "soundLevelDb": -55.35
+    },
+    {
+      "timestamp": "2026-07-22T02:29:57.759573Z",
+      "soundLevelDb": -53.18
+    },
+    {
+      "timestamp": "2026-07-22T02:31:57.759573Z",
+      "soundLevelDb": -54.15
+    },
+    {
+      "timestamp": "2026-07-22T02:33:57.759573Z",
+      "soundLevelDb": -54.35
+    },
+    {
+      "timestamp": "2026-07-22T02:35:57.759573Z",
+      "soundLevelDb": -54.14
+    },
+    {
+      "timestamp": "2026-07-22T02:37:57.759573Z",
+      "soundLevelDb": -54.36
+    },
+    {
+      "timestamp": "2026-07-22T02:39:57.759573Z",
+      "soundLevelDb": -53.91
+    },
+    {
+      "timestamp": "2026-07-22T02:41:57.759573Z",
+      "soundLevelDb": -53.79
+    }
   ]
 }

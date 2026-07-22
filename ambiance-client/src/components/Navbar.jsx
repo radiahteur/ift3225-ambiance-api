@@ -1,3 +1,6 @@
+// Barre de navigation commune à toutes les pages.
+// Affiche Connexion/Inscription si l'usager n'est pas connecté,
+// ou Mon compte/Déconnexion s'il l'est (selon la présence du token).
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {

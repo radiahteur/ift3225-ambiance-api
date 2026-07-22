@@ -1,3 +1,6 @@
+// Fonctions liées aux lieux.
+// Permet de récupérer la liste des lieux (pour la carte)
+// et le détail d'un lieu en particulier.
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";
