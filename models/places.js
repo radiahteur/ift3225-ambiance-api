@@ -1,4 +1,5 @@
-
+// Modèle représentant un lieu.
+// Un lieu peut être associé à des mesures et des observations.
 
 const mongoose=require("mongoose");
 
