@@ -1,6 +1,7 @@
 // Fonctions liées à l'ambiance d'un lieu.
 // Regroupe les appels vers l'historique, les créneaux calmes
 // et le score de confort renvoyés par l'API.
+//Re push pour la demonstrateur 
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";
