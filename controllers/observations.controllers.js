@@ -8,7 +8,7 @@ async function createObservation(req, res, next) {
     const body = { ...req.body };
 
     if (body.location) {
-      body.location = body.location.toLowerCase();
+      body.location = body.location.trim().toLowerCase();
     }
 
     // Si la requête provient d'un utilisateur connecté,

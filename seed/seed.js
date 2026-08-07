@@ -24,6 +24,8 @@ const Device = require('../models/devices');
 const Measurement = require('../models/measurements');
 const Observation = require('../models/observations');
 const Place = require("../models/places");
+const User = require ("../models/users");
+const bcrypt = require ("bcryptjs");
 
 const devices = [
   {
@@ -197,6 +199,7 @@ const measurements = [
   { deviceId: "phone001", location: "cour_avant", timestamp: new Date("2026-06-10T06:46:12.199640Z"), soundLevelDb: -66.34 },
   { deviceId: "phone001", location: "cour_avant", timestamp: new Date("2026-06-10T06:47:05.968213Z"), soundLevelDb: -66.36 }];
 
+  
 async function seed() {
   await connectDB();
 
@@ -205,6 +208,7 @@ async function seed() {
   await Place.deleteMany({});
   await Measurement.deleteMany({});
   await Observation.deleteMany({});
+  await User.deleteMany({});
 
   console.log('Insertion des devices...');
   await Device.insertMany(devices);
@@ -217,6 +221,16 @@ async function seed() {
 
   console.log('Insertion des observations...');
   await Observation.insertMany(observations);
+
+  console.log('Insertion des utilisateurs...');
+
+  const hashedPassword = await bcrypt.hash("password123", 10);
+
+  await User.create({
+    username: "testuser",
+    email: "test@example.com",
+    password: hashedPassword
+  });
 
   console.log(
     `Seed terminé : ${devices.length} device(s), ${measurements.length} mesure(s), ${observations.length} observation(s).`

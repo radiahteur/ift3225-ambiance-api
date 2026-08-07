@@ -22,7 +22,7 @@ function authenticateJWT(req, res, next) {
 
     // Format attendu :
     // Authorization: Bearer token
-    const parts = authHeader.split(' ');
+    const parts = authHeader.trim().split(/\s+/);
 
 
     if (parts.length !== 2 || parts[0] !== "Bearer") {

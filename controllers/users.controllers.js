@@ -19,6 +19,18 @@ async function register(req, res, next) {
             password
         } = req.body;
 
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    code: "MISSING_FIELDS",
+                    message: "Username, email and password are required"
+                }       
+            });
+        }
+
+        const normalizeEmail = email.trim().toLoweCase();
+
         const existingUser = await User.findOne({
             email
         });
@@ -42,8 +54,8 @@ async function register(req, res, next) {
 
         const user = await User.create({
 
-            username,
-            email,
+            username: username.trim(),
+            email: normalizedEmail,
             password: hashedPassword
 
         });
@@ -75,7 +87,19 @@ async function login(req, res, next) {
 
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email });
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    code: "MISSING_FIELDS",
+                    message: "Email and password are required"
+                }
+            });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const user = await User.findOne({ email: normalizedEmail }); 
 
         if (!user) {
             return res.status(401).json({
