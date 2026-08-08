@@ -1,18 +1,16 @@
 // Contrôleur des utilisateurs.
-// Gère l'inscription, la connexion et les informations du compte utilisateur.
+// Gère les requêtes HTTP liées aux utilisateurs.
 
-const User = require('../models/users');
-const Observation = require('../models/observations');
-
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
+const {
+    registerUser,
+    loginUser,
+    getUserById,
+    getUserObservations
+} = require('../services/users.service');
 
 // Création d'un compte utilisateur
 async function register(req, res, next) {
-
     try {
-
         const {
             username,
             email,
@@ -25,18 +23,27 @@ async function register(req, res, next) {
                 error: {
                     code: "MISSING_FIELDS",
                     message: "Username, email and password are required"
-                }       
+                }
             });
         }
 
-        const normalizeEmail = email.trim().toLoweCase();
+        const user = await registerUser(
+            username,
+            email,
+            password
+        );
 
-        const existingUser = await User.findOne({
-            email
+        res.status(201).json({
+            success: true,
+            data: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            }
         });
 
-        if (existingUser) {
-
+    } catch (error) {
+        if (error.code === 'EMAIL_EXISTS') {
             return res.status(400).json({
                 success: false,
                 error: {
@@ -44,48 +51,19 @@ async function register(req, res, next) {
                     message: "Email already used"
                 }
             });
-
         }
 
-        const hashedPassword = await bcrypt.hash(
-            password,
-            10
-        );
-
-        const user = await User.create({
-
-            username: username.trim(),
-            email: normalizedEmail,
-            password: hashedPassword
-
-        });
-
-        res.status(201).json({
-
-            success: true,
-
-            data: {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            }
-
-        });
-
-    } catch (error) {
-
         next(error);
-
     }
-
 }
 
-
+// Connexion
 async function login(req, res, next) {
-
     try {
-
-        const { email, password } = req.body;
+        const {
+            email,
+            password
+        } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({
@@ -97,36 +75,9 @@ async function login(req, res, next) {
             });
         }
 
-        const normalizedEmail = email.trim().toLowerCase();
-
-        const user = await User.findOne({ email: normalizedEmail }); 
-
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                error: {
-                    code: "INVALID_CREDENTIALS",
-                    message: "Email ou mot de passe incorrect"
-                }
-            });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({
-                success: false,
-                error: {
-                    code: "INVALID_CREDENTIALS",
-                    message: "Email ou mot de passe incorrect"
-                }
-            });
-        }
-
-        const token = jwt.sign(
-            { id: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1d" }
+        const { user, token } = await loginUser(
+            email,
+            password
         );
 
         res.status(200).json({
@@ -142,21 +93,26 @@ async function login(req, res, next) {
         });
 
     } catch (error) {
+        if (error.code === 'INVALID_CREDENTIALS') {
+            return res.status(401).json({
+                success: false,
+                error: {
+                    code: "INVALID_CREDENTIALS",
+                    message: "Email ou mot de passe incorrect"
+                }
+            });
+        }
+
         next(error);
     }
 }
 
 // Informations de l'utilisateur connecté
 async function getMe(req, res, next) {
-
     try {
-
-        const user = await User.findById(
-            req.user.id
-        ).populate("favorites");
+        const user = await getUserById(req.user.id);
 
         if (!user) {
-
             return res.status(404).json({
                 success: false,
                 error: {
@@ -164,67 +120,44 @@ async function getMe(req, res, next) {
                     message: "User not found"
                 }
             });
-
         }
 
         res.json({
-
             success: true,
-
             data: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
                 favorites: user.favorites
             }
-
         });
 
     } catch (error) {
-
         next(error);
-
     }
-
 }
-
 
 // Observations envoyées par l'utilisateur
 async function getMyObservations(req, res, next) {
-
     try {
-
-        const observations =
-            await Observation.find({
-                author: req.user.id
-            }).sort({
-                timestamp: -1
-            });
+        const observations = await getUserObservations(
+            req.user.id
+        );
 
         res.json({
-
             success: true,
-
             count: observations.length,
-
             data: observations
-
         });
 
     } catch (error) {
-
         next(error);
-
     }
-
 }
 
-
 module.exports = {
-
     register,
     login,
     getMe,
     getMyObservations
-
 };
