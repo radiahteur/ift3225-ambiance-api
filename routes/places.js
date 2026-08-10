@@ -11,13 +11,14 @@ const {
 
 const router = express.Router();
 
+const { cacheMiddleware } = require('../middleware/cache');
 
 // Lecture publique : afficher tous les lieux
-router.get('/', getPlaces);
+router.get('/', cacheMiddleware(60), getPlaces);
 
 
 // Lecture publique : détail d'un lieu
-router.get('/:id', getPlaceById);
+router.get('/:id', cacheMiddleware(60), getPlaceById);
 
 
 module.exports = router;
