@@ -4,7 +4,10 @@ import HistoryChart from "./HistoryChart";
 import { getPlaceById } from "../api/places";
 import { getHistory, getQuietHours } from "../api/ambiance";
 import { submitObservation } from "../api/observations";
+import { addFavorite, removeFavorite } from "../api/favorites";
+import { getMe } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+
 const noiseLabels = {
   quiet: { emoji: "🟢", label: "Calme" },
   normal: { emoji: "🟢", label: "Normal" },
@@ -26,6 +29,9 @@ function PlaceDetails() {
   const [ambiance, setAmbiance] = useState("");
   const [notes, setNotes] = useState("");
 
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
@@ -44,6 +50,12 @@ function PlaceDetails() {
         const quietResult = await getQuietHours(location);
         setQuietHours(quietResult.data.quietHours);
 
+        if (isLoggedIn) {
+          const meResult = await getMe();
+          const favoriteIds = meResult.data.favorites.map((fav) => fav._id);
+          setIsFavorite(favoriteIds.includes(id));
+        }
+
       } catch (err) {
         console.error(err);
         setError("Impossible de charger les données de ce lieu.");
@@ -53,7 +65,7 @@ function PlaceDetails() {
     }
 
     loadData();
-  }, [id]);
+  }, [id, isLoggedIn]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,6 +82,25 @@ function PlaceDetails() {
     }
   };
 
+  const handleToggleFavorite = async () => {
+    setFavoriteLoading(true);
+
+    try {
+      if (isFavorite) {
+        await removeFavorite(id);
+        setIsFavorite(false);
+      } else {
+        await addFavorite(id);
+        setIsFavorite(true);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour des favoris.");
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
+
   if (loading) return <div style={{ padding: "20px" }}>Chargement...</div>;
   if (error) return <div style={{ padding: "20px" }}>{error}</div>;
 
@@ -80,6 +111,12 @@ function PlaceDetails() {
     <div style={{ padding: "20px" }}>
       <h1>📍 {place.name}</h1>
       <p>{place.description}</p>
+
+      {isLoggedIn && (
+        <button onClick={handleToggleFavorite} disabled={favoriteLoading}>
+          {isFavorite ? "★ Retirer des favoris" : "☆ Ajouter aux favoris"}
+        </button>
+      )}
 
       <hr />
 

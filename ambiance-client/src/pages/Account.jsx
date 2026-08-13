@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getMe, getMyObservations } from "../api/auth.js";
+import { removeFavorite } from "../api/favorites.js";
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -7,22 +9,36 @@ function Account() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const userResult = await getMe();
-        setUser(userResult.data);
-
-        const obsResult = await getMyObservations();
-        setObservations(obsResult.data);
-
-      } catch (err) {
-        console.error(err);
-        setError("Impossible de charger les données du compte.");
-      }
-    }
-
     fetchData();
   }, []);
+
+  async function fetchData() {
+    try {
+      const userResult = await getMe();
+      setUser(userResult.data);
+
+      const obsResult = await getMyObservations();
+      setObservations(obsResult.data);
+
+    } catch (err) {
+      console.error(err);
+      setError("Impossible de charger les données du compte.");
+    }
+  }
+
+  const handleRemoveFavorite = async (placeId) => {
+    try {
+      await removeFavorite(placeId);
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        favorites: prevUser.favorites.filter((fav) => fav._id !== placeId),
+      }));
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors du retrait du favori.");
+    }
+  };
 
   if (error) {
     return <div style={{ padding: "20px" }}>{error}</div>;
@@ -45,6 +61,26 @@ function Account() {
 
       <hr />
 
+      <h2>Mes favoris</h2>
+
+      {!user.favorites || user.favorites.length === 0 ? (
+        <p>Aucun lieu favori pour le moment.</p>
+      ) : (
+        <ul>
+          {user.favorites.map((place) => (
+            <li key={place._id} style={{ marginBottom: "8px" }}>
+              <Link to={`/place/${place._id}`}>{place.name}</Link>
+              {" — "}
+              <button onClick={() => handleRemoveFavorite(place._id)}>
+                Retirer
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <hr />
+
       <h2>Mes observations</h2>
 
       {observations.length === 0 ? (
@@ -59,15 +95,15 @@ function Account() {
             </tr>
           </thead>
 
-    <tbody>
-        {observations.map((obs) => (
-            <tr key={obs._id}>
-            <td>{obs.location}</td>
-            <td>{new Date(obs.timestamp).toLocaleDateString("fr-FR")}</td>
-            <td>{obs.crowdLevel}</td>
-            </tr>
-      ))}
-    </tbody>
+          <tbody>
+            {observations.map((obs) => (
+              <tr key={obs._id}>
+                <td>{obs.location}</td>
+                <td>{new Date(obs.timestamp).toLocaleDateString("fr-FR")}</td>
+                <td>{obs.crowdLevel}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       )}
     </div>
