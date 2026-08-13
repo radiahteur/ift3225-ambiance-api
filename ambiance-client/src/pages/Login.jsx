@@ -1,26 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth.js";
+import { login as loginApi } from "../api/auth.js";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const result = await login(email, password);
+      const result = await loginApi(email, password);
 
-      localStorage.setItem(
-        "token",
-        result.data.token
-      );
+      login(result.data.token);
 
       alert("Connexion réussie !");
-
-      console.log(result);
 
       navigate("/account");
 

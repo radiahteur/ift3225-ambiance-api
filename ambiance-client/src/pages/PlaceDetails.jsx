@@ -4,7 +4,7 @@ import HistoryChart from "./HistoryChart";
 import { getPlaceById } from "../api/places";
 import { getHistory, getQuietHours } from "../api/ambiance";
 import { submitObservation } from "../api/observations";
-
+import { useAuth } from "../context/AuthContext";
 const noiseLabels = {
   quiet: { emoji: "🟢", label: "Calme" },
   normal: { emoji: "🟢", label: "Normal" },
@@ -26,7 +26,7 @@ function PlaceDetails() {
   const [ambiance, setAmbiance] = useState("");
   const [notes, setNotes] = useState("");
 
-  const isLoggedIn = !!localStorage.getItem("token");
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     async function loadData() {

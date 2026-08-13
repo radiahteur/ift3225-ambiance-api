@@ -2,8 +2,7 @@
 // Gère l'inscription et la connexion en appelant l'API.
 
 import axios from "axios";
-
-const API_URL = "http://localhost:3000";
+import { API_URL } from "../config";
 
 export async function login(email, password) {
   const response = await axios.post(`${API_URL}/users/login`, {

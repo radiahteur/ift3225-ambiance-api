@@ -1,14 +1,15 @@
 // Barre de navigation commune à toutes les pages.
 // Affiche Connexion/Inscription si l'usager n'est pas connecté,
-// ou Mon compte/Déconnexion s'il l'est (selon la présence du token).
+// ou Mon compte/Déconnexion s'il l'est (selon useAuth()).
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const { isLoggedIn, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/login");
   };
 
@@ -24,7 +25,7 @@ function Navbar() {
         Accueil
       </Link>
 
-      {token ? (
+      {isLoggedIn ? (
         <>
           <Link to="/account" style={{ color: "white", textDecoration: "none" }}>
             Mon compte
