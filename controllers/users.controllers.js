@@ -5,7 +5,9 @@ const {
     registerUser,
     loginUser,
     getUserById,
-    getUserObservations
+    getUserObservations,
+    addFavorite,
+    removeFavorite
 } = require('../services/users.service');
 
 // Création d'un compte utilisateur
@@ -155,9 +157,45 @@ async function getMyObservations(req, res, next) {
     }
 }
 
+// Ajoute un lieu aux favoris de l'utilisateur connecté
+async function addFavoritePlace(req, res, next) {
+    try {
+        const user = await addFavorite(req.user.id, req.params.placeId);
+
+        res.json({
+            success: true,
+            data: {
+                favorites: user.favorites
+            }
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+// Retire un lieu des favoris de l'utilisateur connecté
+async function removeFavoritePlace(req, res, next) {
+    try {
+        const user = await removeFavorite(req.user.id, req.params.placeId);
+
+        res.json({
+            success: true,
+            data: {
+                favorites: user.favorites
+            }
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     register,
     login,
     getMe,
-    getMyObservations
+    getMyObservations,
+    addFavoritePlace,
+    removeFavoritePlace
 };

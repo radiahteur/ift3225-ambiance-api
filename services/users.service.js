@@ -62,6 +62,21 @@ async function loginUser(email, password) {
 async function getUserById(userId) {
     return User.findById(userId).populate('favorites');
 }
+async function addFavorite(userId, placeId) {
+    return User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { favorites: placeId } },
+        { new: true }
+    ).populate('favorites');
+}
+
+async function removeFavorite(userId, placeId) {
+    return User.findByIdAndUpdate(
+        userId,
+        { $pull: { favorites: placeId } },
+        { new: true }
+    ).populate('favorites');
+}
 
 async function getUserObservations(userId) {
     return Observation.find({
@@ -75,5 +90,7 @@ module.exports = {
     registerUser,
     loginUser,
     getUserById,
-    getUserObservations
+    getUserObservations,
+    addFavorite,
+    removeFavorite
 };

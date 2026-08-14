@@ -7,7 +7,9 @@ const {
     register,
     login,
     getMe,
-    getMyObservations
+    getMyObservations,
+    addFavoritePlace,
+    removeFavoritePlace
 } = require('../controllers/users.controllers');
 
 
@@ -39,6 +41,24 @@ router.get(
     '/me/observations',
     authenticateJWT,
     getMyObservations
+);
+
+
+// Ajouter un lieu aux favoris
+// POST /users/me/favorites/:placeId
+router.post(
+    '/me/favorites/:placeId',
+    authenticateJWT,
+    addFavoritePlace
+);
+
+
+// Retirer un lieu des favoris
+// DELETE /users/me/favorites/:placeId
+router.delete(
+    '/me/favorites/:placeId',
+    authenticateJWT,
+    removeFavoritePlace
 );
 
 module.exports = router;
