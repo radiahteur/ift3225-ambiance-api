@@ -12,6 +12,7 @@ const ambianceRoutes = require('./routes/ambiance');
 const errorHandler = require('./middleware/errorHandler');
 const placeRoutes = require('./routes/places');
 const userRoutes = require('./routes/users');
+const favoritesRoutes = require('./routes/favorites');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/observations', observationRoutes);
 app.use('/ambiance', ambianceRoutes);
 app.use('/places', placeRoutes);
 app.use('/users', userRoutes);
+app.use('/favorites', favoritesRoutes);
 
 
 app.use((req, res) => {
