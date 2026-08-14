@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as loginApi } from "../api/auth.js";
 import { useAuth } from "../context/AuthContext";
+import { useAsyncAction } from "../hooks/useAsyncAction";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,22 +10,20 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  const loginAction = useAsyncAction(async () => {
+    const result = await loginApi(email, password);
+    login(result.data.token);
+    return result;
+  });
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const result = await loginApi(email, password);
-
-      login(result.data.token);
-
-      alert("Connexion réussie !");
-
+      await loginAction.run();
       navigate("/account");
-
-    } catch (error) {
-      console.error(error);
-      console.error(error.response?.data);
-      alert(JSON.stringify(error.response?.data));
+    } catch {
+      // l'erreur est déjà exposée via loginAction.error
     }
   };
 
@@ -40,6 +39,7 @@ function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
 
@@ -52,12 +52,19 @@ function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
 
         <br />
 
-        <button type="submit">Se connecter</button>
+        <button type="submit" disabled={loginAction.loading}>
+          {loginAction.loading ? "Connexion..." : "Se connecter"}
+        </button>
+
+        {loginAction.error && (
+          <p style={{ color: "#c0392b" }}>{loginAction.error}</p>
+        )}
       </form>
     </div>
   );

@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import HistoryChart from "./HistoryChart";
-import { getPlaceById } from "../api/places";
-import { getHistory, getQuietHours } from "../api/ambiance";
 import { submitObservation } from "../api/observations";
-import { addFavorite, removeFavorite } from "../api/favorites";
-import { getMe } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { usePlaceDetails } from "../hooks/usePlaceDetails";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 const noiseLabels = {
   quiet: { emoji: "🟢", label: "Calme" },
@@ -18,94 +18,38 @@ const noiseLabels = {
 
 function PlaceDetails() {
   const { id } = useParams();
-
-  const [place, setPlace] = useState(null);
-  const [history, setHistory] = useState(null);
-  const [quietHours, setQuietHours] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { place, history, quietHours, loading, error, reload } = usePlaceDetails(id);
+  const { isLoggedIn, isFavorite, toggleFavorite } = useAuth();
 
   const [crowdLevel, setCrowdLevel] = useState("");
   const [ambiance, setAmbiance] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [favoriteLoading, setFavoriteLoading] = useState(false);
-
-  const { isLoggedIn } = useAuth();
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-
-        const placeResult = await getPlaceById(id);
-        setPlace(placeResult.data);
-
-        const location = placeResult.data.location;
-
-        const historyResult = await getHistory(location);
-        setHistory(historyResult.data);
-
-        const quietResult = await getQuietHours(location);
-        setQuietHours(quietResult.data.quietHours);
-
-        if (isLoggedIn) {
-          const meResult = await getMe();
-          const favoriteIds = meResult.data.favorites.map((fav) => fav._id);
-          setIsFavorite(favoriteIds.includes(id));
-        }
-
-      } catch (err) {
-        console.error(err);
-        setError("Impossible de charger les données de ce lieu.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, [id, isLoggedIn]);
+  const favoriteAction = useAsyncAction(() => toggleFavorite(place));
+  const observationAction = useAsyncAction(() =>
+    submitObservation(place.location, crowdLevel, ambiance, notes)
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await submitObservation(place.location, crowdLevel, ambiance, notes);
-      alert("Observation enregistrée !");
+      await observationAction.run();
       setCrowdLevel("");
       setAmbiance("");
       setNotes("");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de l'envoi de l'observation.");
+      reload();
+    } catch {
+      // l'erreur est déjà exposée via observationAction.error
     }
   };
 
-  const handleToggleFavorite = async () => {
-    setFavoriteLoading(true);
-
-    try {
-      if (isFavorite) {
-        await removeFavorite(id);
-        setIsFavorite(false);
-      } else {
-        await addFavorite(id);
-        setIsFavorite(true);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la mise à jour des favoris.");
-    } finally {
-      setFavoriteLoading(false);
-    }
-  };
-
-  if (loading) return <div style={{ padding: "20px" }}>Chargement...</div>;
-  if (error) return <div style={{ padding: "20px" }}>{error}</div>;
+  if (loading) return <LoadingState message="Chargement du lieu..." />;
+  if (error) return <ErrorState message={error} onRetry={reload} />;
 
   const classification = history?.summary?.noiseClassification || "unknown";
   const badge = noiseLabels[classification];
+  const favorite = isFavorite(id);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -113,9 +57,14 @@ function PlaceDetails() {
       <p>{place.description}</p>
 
       {isLoggedIn && (
-        <button onClick={handleToggleFavorite} disabled={favoriteLoading}>
-          {isFavorite ? "★ Retirer des favoris" : "☆ Ajouter aux favoris"}
-        </button>
+        <>
+          <button onClick={() => favoriteAction.run()} disabled={favoriteAction.loading}>
+            {favorite ? "★ Retirer des favoris" : "☆ Ajouter aux favoris"}
+          </button>
+          {favoriteAction.error && (
+            <p style={{ color: "#c0392b" }}>{favoriteAction.error}</p>
+          )}
+        </>
       )}
 
       <hr />
@@ -185,7 +134,16 @@ function PlaceDetails() {
 
           <br /><br />
 
-          <button type="submit">Envoyer l'observation</button>
+          <button type="submit" disabled={observationAction.loading}>
+            {observationAction.loading ? "Envoi..." : "Envoyer l'observation"}
+          </button>
+
+          {observationAction.error && (
+            <p style={{ color: "#c0392b" }}>{observationAction.error}</p>
+          )}
+          {observationAction.success && (
+            <p style={{ color: "#27ae60" }}>Observation enregistrée !</p>
+          )}
         </form>
       ) : (
         <p>Vous devez être connecté pour soumettre une observation.</p>

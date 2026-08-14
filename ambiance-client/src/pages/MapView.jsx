@@ -1,44 +1,49 @@
-import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Link } from "react-router-dom";
+import { useCallback } from "react";
 import { getPlaces } from "../api/places";
+import { useAsync } from "../hooks/useAsync";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import { useAuth } from "../context/AuthContext";
+import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
+
+function FavoriteToggle({ place }) {
+  const { isFavorite, toggleFavorite } = useAuth();
+  const favoriteAction = useAsyncAction(() => toggleFavorite(place));
+  const favorite = isFavorite(place._id);
+
+  return (
+    <>
+      <button onClick={() => favoriteAction.run()} disabled={favoriteAction.loading}>
+        {favorite ? "★ Retirer des favoris" : "☆ Ajouter aux favoris"}
+      </button>
+      {favoriteAction.error && (
+        <p style={{ color: "#c0392b", fontSize: "0.85em" }}>{favoriteAction.error}</p>
+      )}
+    </>
+  );
+}
 
 function MapView() {
-  const [places, setPlaces] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { isLoggedIn } = useAuth();
+  const fetchPlaces = useCallback(() => getPlaces(), []);
 
-  useEffect(() => {
-    loadPlaces();
-  }, []);
-
-  async function loadPlaces() {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await getPlaces();
-      setPlaces(response.data);
-    } catch (error) {
-      console.error(error);
-      setError("Impossible de charger les lieux. Vérifiez votre connexion et réessayez.");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { data: result, loading, error, refetch } = useAsync(
+    fetchPlaces,
+    [],
+    "Impossible de charger les lieux. Vérifiez votre connexion et réessayez."
+  );
 
   if (loading) {
-    return <div style={{ padding: "20px" }}>Chargement de la carte...</div>;
+    return <LoadingState message="Chargement de la carte..." />;
   }
 
   if (error) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <p>{error}</p>
-        <button onClick={loadPlaces}>Réessayer</button>
-      </div>
-    );
+    return <ErrorState message={error} onRetry={refetch} />;
   }
+
+  const places = result?.data || [];
 
   return (
     <>
@@ -57,18 +62,16 @@ function MapView() {
         />
 
         {places.map((place) => (
-          <Marker
-            key={place._id}
-            position={[place.latitude, place.longitude]}
-          >
+          <Marker key={place._id} position={[place.latitude, place.longitude]}>
             <Popup>
               <h3>{place.name}</h3>
-
               <p>{place.description}</p>
 
-              <Link to={`/place/${place._id}`}>
-                Voir les détails
-              </Link>
+              {isLoggedIn && <FavoriteToggle place={place} />}
+
+              <br />
+
+              <Link to={`/place/${place._id}`}>Voir les détails</Link>
             </Popup>
           </Marker>
         ))}

@@ -1,52 +1,30 @@
-import { useState, useEffect } from "react";
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
-import { getMe, getMyObservations } from "../api/auth.js";
-import { removeFavorite } from "../api/favorites.js";
+import { getMyObservations } from "../api/auth.js";
+import { useAuth } from "../context/AuthContext";
+import { useAsync } from "../hooks/useAsync";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 function Account() {
-  const [user, setUser] = useState(null);
-  const [observations, setObservations] = useState([]);
-  const [error, setError] = useState(null);
+  const { user, userLoading, toggleFavorite } = useAuth();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const fetchObservations = useCallback(() => getMyObservations(), []);
+  const {
+    data: obsResult,
+    loading: obsLoading,
+    error: obsError,
+    refetch: refetchObservations,
+  } = useAsync(fetchObservations, [], "Impossible de charger vos observations.");
 
-  async function fetchData() {
-    try {
-      const userResult = await getMe();
-      setUser(userResult.data);
+  const removeFavoriteAction = useAsyncAction((placeId) => toggleFavorite(placeId));
 
-      const obsResult = await getMyObservations();
-      setObservations(obsResult.data);
-
-    } catch (err) {
-      console.error(err);
-      setError("Impossible de charger les données du compte.");
-    }
+  if (userLoading || !user) {
+    return <LoadingState message="Chargement du compte..." />;
   }
 
-  const handleRemoveFavorite = async (placeId) => {
-    try {
-      await removeFavorite(placeId);
-
-      setUser((prevUser) => ({
-        ...prevUser,
-        favorites: prevUser.favorites.filter((fav) => fav._id !== placeId),
-      }));
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors du retrait du favori.");
-    }
-  };
-
-  if (error) {
-    return <div style={{ padding: "20px" }}>{error}</div>;
-  }
-
-  if (!user) {
-    return <div style={{ padding: "20px" }}>Chargement...</div>;
-  }
+  const observations = obsResult?.data || [];
 
   return (
     <div style={{ padding: "20px" }}>
@@ -71,19 +49,29 @@ function Account() {
             <li key={place._id} style={{ marginBottom: "8px" }}>
               <Link to={`/place/${place._id}`}>{place.name}</Link>
               {" — "}
-              <button onClick={() => handleRemoveFavorite(place._id)}>
+              <button
+                onClick={() => removeFavoriteAction.run(place._id)}
+                disabled={removeFavoriteAction.loading}
+              >
                 Retirer
               </button>
             </li>
           ))}
         </ul>
       )}
+      {removeFavoriteAction.error && (
+        <p style={{ color: "#c0392b" }}>{removeFavoriteAction.error}</p>
+      )}
 
       <hr />
 
       <h2>Mes observations</h2>
 
-      {observations.length === 0 ? (
+      {obsLoading ? (
+        <LoadingState message="Chargement des observations..." />
+      ) : obsError ? (
+        <ErrorState message={obsError} onRetry={refetchObservations} />
+      ) : observations.length === 0 ? (
         <p>Aucune observation pour le moment.</p>
       ) : (
         <table border="1" cellPadding="8">
