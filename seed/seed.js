@@ -42,26 +42,33 @@ const places = [
   {
     name: "Bibliothèque",
     location: "bibliotheque",
-    latitude: 45.5019,
-    longitude: -73.5674,
+    latitude: 32.5019,
+    longitude: -12.5674,
     description: "Bibliothèque principale"
   },
   {
-    name: "Métro",
-    location: "metro",
+    name: "Rue Hébert",
+    location: "rue_hebert",
     latitude: 45.5088,
     longitude: -73.5878,
-    description: "Station de métro"
+    description: "Rue Hébert"
   },
   {
-    name: "Cafétéria",
-    location: "cafeteria",
-    latitude: 45.4972,
-    longitude: -73.6104,
-    description: "Cafétéria étudiante"
+    name: "Places d'Armes",
+    location: "place_d_armes",
+    latitude: 98.4972,
+    longitude: -55.6104,
+    description: "Place d'Armes"
+  },
+  {
+    name: "Rue Druillettes",
+    location: "rue_druillettes",
+    latitude: 17.2245,
+    longitude: -61.8500,
+    description: "Rue Druillettes"
   }
 ];
-
+c
 const observations = [
   {
     deviceId: 'phone001',
